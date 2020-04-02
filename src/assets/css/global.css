@@ -1,0 +1,14 @@
+html,body,#app{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.el-form-item__label{
+    float: none;
+  }
+  .el-form-item__content{
+      margin-left: 10px !important;
+      max-width: 1200px !important;
+  }
+
