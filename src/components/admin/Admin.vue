@@ -17,7 +17,7 @@
               <!-- 图标 -->
               <i class="el-icon-location"></i>
               <!-- 文本 -->
-              <span>主页</span>
+              <span>管理员-主页</span>
             </template>
             <!-- 二级菜单 -->
             <!-- <el-menu-item index="1-4-1">
@@ -38,12 +38,11 @@
               <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
             </el-col>
           </el-row>
-
           <el-table :data="userlist" border stripe>
             <el-table-column label="#" type="index"></el-table-column>
             <el-table-column label="姓名" prop="username"></el-table-column>
+            <el-table-column label="密码" prop="password"></el-table-column>
             <el-table-column label="角色" prop="role"></el-table-column>
-
             <el-table-column label="操作" width="180px">
               <!-- 删除角色按钮 -->
               <template slot-scope="scope">
@@ -64,18 +63,17 @@
           title="添加用户"
           :visible.sync="addDialogVisible"
           width="50%"
-          @close="addDialogClosed"
         >
           <!-- 内容主体区域 -->
-          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
+          <el-form :model="user" ref="addFormRef" :rules="rules" label-width="70px">
             <el-form-item label="用户名" prop="username">
-              <el-input v-model="addForm.username"></el-input>
+              <el-input v-model="user.username" placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-              <el-input v-model="addForm.password" show-password></el-input>
+              <el-input v-model="user.password" placeholder="密码"></el-input>
             </el-form-item>
-            <el-form-item prop="role">
-              <el-select v-model="addForm.role" placeholder="请选择角色">
+            <el-form-item label="角色" prop="role">
+              <el-select v-model="user.role" placeholder="角色">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -84,12 +82,10 @@
                 ></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addUser">添加用户</el-button>
+            </el-form-item>
           </el-form>
-          <!-- 底部区域 -->
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="addDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addUser(addForm)">确 定</el-button>
-          </span>
         </el-dialog>
       </el-main>
     </el-container>
@@ -100,49 +96,30 @@ import ShowVue from "../teacher/Show.vue";
 export default {
   data() {
     return {
-      //控制添加用户对话框显示与隐藏
-      addDialogVisible: false, //添加用户的表单数据
-      addForm: {
-        role: "学生",
-        username: "小米米",
-        password: "111111"
-      },
-      userlist: [
-        { username: "老王", role: "管理员" },
-        { username: "张三", role: "学生" },
-        { username: "周文", role: "老师" },
-        { username: "andy", role: "老师" },
-        { username: "老李", role: "管理员" },
-        { username: "王五", role: "学生" },
-        { username: "Alice", role: "老师" },
-        { username: "andy", role: "老师" },
-        { username: "老大", role: "管理员" },
-        { username: "小红", role: "学生" },
-        { username: "霞洛", role: "老师" },
-        { username: "欧欧", role: "老师" }
-      ],
-      //添加表单的验证规则对象
-      addFormRules: {
+      rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名的长度在3~10个字符之间",
-            trigger: "blur"
-          }
+          { required: true, trigger: "blur", message: "用户名必须录入" }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          {
-            min: 6,
-            max: 15,
-            message: "用户名的长度在6~15个字符之间",
-            trigger: "blur"
-          }
+          { required: true, trigger: "blur", message: "密码必须录入" }
         ],
-        role: [{ required: true, message: "请选择你的角色", trigger: "change" }]
+        role: [{ required: true, trigger: "blur", message: "角色必须录入" }]
       },
+      //控制添加用户对话框显示与隐藏
+      addDialogVisible: false, //添加用户的表单数据
+      user: {
+        username: "",
+        password: "",
+        role: ""
+      },
+      userlist: [
+        { username: "老王", role: "老师", password: "123456" },
+        { username: "张三", role: "学生", password: "123456" },
+        { username: "周文", role: "老师", password: "123456" },
+        { username: "andy", role: "老师", password: "123456" },
+        { username: "admin", role: "管理员", password: "123456" },
+        { username: "吴扬", role: "学生", password: "123456" }
+      ],
       options: [
         {
           value: "学生"
@@ -159,7 +136,7 @@ export default {
 
   methods: {
     logout() {
-      // window.sessionStorage.clear()
+      window.sessionStorage.clear();
       this.$router.push("/login");
     },
 
@@ -181,20 +158,16 @@ export default {
       this.userlist.splice($index, 1);
       this.$message.success("删除用户成功！");
     },
-    //监听添加用户对话框关闭事件
-    addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
-    },
     //点击按钮添加用户
-    addUser(addForm) {
-      this.$refs.addFormRef.validate(async valid => {
-        // console.log(valid)
-        if (!valid) return;
-        // console.log(this.addForm);
-
-        console.log(addForm);
-        this.userlist.push(addForm);
-
+    addUser() {
+      this.$refs.addFormRef.validate(valid => {
+        if (!valid) {
+           this.$message.error("添加用户失败！");
+          //隐藏添加用户的对话框
+          this.addDialogVisible = false;
+          return;
+        }
+        this.userlist.push(this.user);
         this.$message.success("添加用户成功！");
         //隐藏添加用户的对话框
         this.addDialogVisible = false;

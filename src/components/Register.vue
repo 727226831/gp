@@ -1,5 +1,6 @@
 <template>
   <div class="register_container">
+    <div class="title">学情问卷调查网站--注册</div>
     <div class="register_box">
       <!-- 头部区域 -->
       <div class="avatar_box">
@@ -26,7 +27,11 @@
         </el-form-item>
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input v-model="registerForm.username" prefix-icon="iconfont icon-user" placeholder="请输入用户名"></el-input>
+          <el-input
+            v-model="registerForm.username"
+            prefix-icon="iconfont icon-user"
+            placeholder="请输入用户名"
+          ></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
@@ -42,6 +47,7 @@
         <el-form-item class="btns">
           <el-button type="primary" @click="register">注册</el-button>
           <el-button type="info" @click="resetregisterForm">重置</el-button>
+          <el-button type="info" @click="back">返回登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -80,9 +86,6 @@ export default {
         {
           value: "老师"
         },
-        {
-          value: "管理员"
-        }
       ]
     };
   },
@@ -91,6 +94,9 @@ export default {
     resetregisterForm() {
       this.$refs.registerFormRef.resetFields();
     },
+    back() {
+      this.$router.push("/login");
+    },
     register() {
       this.$refs.registerFormRef.validate(async valid => {
         if (!valid) return;
@@ -98,10 +104,7 @@ export default {
         if (value === "选项1") {
           this.$router.push("/login");
           this.$message.success("注册成功");
-        } else if (value === "选项2") {
-          this.$router.push("/login");
-          this.$message.success("注册成功");
-        } else {
+        } else  {
           this.$router.push("/login");
           this.$message.success("注册成功");
         }
@@ -115,7 +118,14 @@ export default {
   background-color: #2b4b6b;
   height: 100%;
 }
-
+.title {
+  color: white;
+  font-size: 40px;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
+}
 .register_box {
   width: 450px;
   height: 340px;

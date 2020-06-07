@@ -1,5 +1,6 @@
 <template>
   <div class="login_container">
+    <div class="title">学情问卷调查网站</div>
     <div class="login_box">
       <!-- 头部区域 -->
       <div class="avatar_box">
@@ -26,7 +27,11 @@
         </el-form-item>
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
+          <el-input
+            v-model="loginForm.username"
+            prefix-icon="iconfont icon-user"
+            placeholder="请输入用户名"
+          ></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
@@ -34,6 +39,7 @@
             v-model="loginForm.password"
             prefix-icon="iconfont icon-3702mima"
             type="password"
+            placeholder="请输入密码"
             show-password
           ></el-input>
         </el-form-item>
@@ -89,29 +95,24 @@ export default {
   methods: {
     //点击重置按钮，重置表单
     resetLoginForm() {
-      // console.log(this);
       this.$refs.loginFormRef.resetFields();
     },
     login() {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return;
         const value = this.loginForm.role;
-        console.log(value);
         if (value === "学生") {
           this.$router.push("/answer");
           this.$message.success("登录成功");
         } else if (value === "老师") {
-          console.log(value);
           this.$router.push("/make");
           this.$message.success("登录成功");
         } else {
-          console.log(value);
           this.$router.push("/admin");
           this.$message.success("登录成功");
         }
       });
     },
-
     register() {
       this.$router.push("/register");
     }
@@ -123,7 +124,14 @@ export default {
   background-color: #2b4b6b;
   height: 100%;
 }
-
+.title {
+  color: white;
+  font-size: 40px;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
+}
 .login_box {
   width: 450px;
   height: 340px;

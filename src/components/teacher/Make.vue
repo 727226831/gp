@@ -53,28 +53,13 @@
             <el-alert title="设置的问题一定能用“从不”，“偶尔”，“经常”，“总是”回答" type="info" :closable="false" center></el-alert>
             <el-form-item
               v-for="(title, index) in MakeValidateForm.titles"
-              :label="'问题' + index"
               :key="title.key"
               :prop="'titles.' + index + '.value'"
               :rules="{
                   required: true, message: '问题不能为空', trigger: 'blur'
                 }"
-            >
+            >问题{{index+1}}.
               <el-input v-model="title.value" placeholder="请输入问题"></el-input>
-              <!--  -->
-              <!-- <el-checkbox-group class="checkbox-group" v-model="MakeValidateForm.type">
-                <el-checkbox
-                  v-for="(item,i) in MakeValidateForm.options"
-                  :label="title+item.value"
-                  :key="i"
-                  border
-                  size="mini"
-                >
-                  {{item.index}}
-                  <el-input v-model="MakeValidateForm.select">{{item.value}}</el-input>
-                </el-checkbox>
-              </el-checkbox-group>-->
-
               <el-button @click.prevent="removeTitle(title)">删除</el-button>
             </el-form-item>
             <el-form-item>
@@ -96,52 +81,53 @@ export default {
       MakeValidateForm: {
         headline: "",
         type: [],
-        text: "",
+        text: "学情问卷调查",
         select: "",
         titles: [
           {
             value: ""
           }
         ],
-        // options: [
-        //   { A: "", value: 1, index: "A" },
-        //   { B: "", value: 2, index: "B" },
-        //   { C: "", value: 3, index: "C" },
-        //   { D: "", value: 4, index: "D" }
-        // ]
-      }
+      },
     };
   },
   methods: {
     logout() {
-      // window.sessionStorage.clear()
       this.$router.push("/login");
     },
     show() {
       this.$router.push("/show");
     },
+    // 添加问题
     addTitle() {
       this.MakeValidateForm.titles.push({
-        value: "",
-        // key: Date.now()
+        value: ""
       });
     },
-    removeTitle(item) {
-      var index = this.MakeValidateForm.titles.indexOf(item);
+    // 删除问题
+    removeTitle(title) {
+      console.log(title);
+      
+      var index = this.MakeValidateForm.titles.indexOf(title);
+      console.log(this.MakeValidateForm.titles.indexOf(title));
+      
       if (index !== -1) {
         this.MakeValidateForm.titles.splice(index, 1);
       }
     },
+    // 重置问题
     resetForm(MakeValidateForm) {
       this.$refs[MakeValidateForm].resetFields();
     },
+    // 提交问卷
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (!valid) {
-          return false;
-          this.$message.error("提交表单失败！");
+           this.$message.error("提交表单失败！");
+          return ;
         }
         this.$message.success("提交表单成功！");
+         location.reload()
       });
     }
   }

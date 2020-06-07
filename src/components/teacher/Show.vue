@@ -60,6 +60,7 @@
             <div class="canvas" id="main6" style="width: 600px;height:600px;"></div>
             <div class="canvas" id="main7" style="width: 600px;height:600px;"></div>
             <div class="canvas" id="main8" style="width: 600px;height:600px;"></div>
+            <div class="canvas" id="main9" style="width: 600px;height:600px;"></div>
           </el-card>
         </el-main>
       </el-container>
@@ -125,6 +126,7 @@ export default {
     var myChart6 = echarts.init(document.getElementById("main6"));
     var myChart7 = echarts.init(document.getElementById("main7"));
     var myChart8 = echarts.init(document.getElementById("main8"));
+    var myChart9 = echarts.init(document.getElementById("main9"));
 
     // const { data: res } = await this.$http.get("reports/type/1");
     // if (res.meta.status !== 200) {
@@ -163,18 +165,19 @@ export default {
       title: {
         text: "问题2"
       },
-      tooltip: {},
+      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+      legend: {
+        data: ["选择人数"]
+      },
+      xAxis: {
+        data: ["从不", "偶尔", "经常", "总是"]
+      },
+      yAxis: {},
       series: [
         {
           name: "选择人数",
-          type: "pie",
-          radius: "55%",
-          data: [
-            { value: 36, name: "从不" },
-            { value: 10, name: "偶尔" },
-            { value: 10, name: "经常" },
-            { value: 20, name: "总是" }
-          ]
+          type: "bar",
+          data: [43, 23, 10, 20]
         }
       ]
     };
@@ -303,6 +306,26 @@ export default {
         }
       ]
     };
+    var option8 = {
+      title: {
+        text: "问题9"
+      },
+      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+      legend: {
+        data: ["选择人数"]
+      },
+      xAxis: {
+        data: ["从不", "偶尔", "经常", "总是"]
+      },
+      yAxis: {},
+      series: [
+        {
+          name: "选择人数",
+          type: "bar",
+          data: [23, 11, 42, 20]
+        }
+      ]
+    };
 
     //5.展示数据
     myChart1.setOption(option0);
@@ -313,6 +336,7 @@ export default {
     myChart6.setOption(option5);
     myChart7.setOption(option6);
     myChart8.setOption(option7);
+    myChart9.setOption(option8);
   }
 };
 </script>

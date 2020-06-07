@@ -101,10 +101,10 @@ export default {
           { title: "8888888888888888888888888" }
         ],
         option: [
-          { title: "从不", value: 0 },
-          { title: "偶尔", value: 1 },
-          { title: "经常", value: 2 },
-          { title: "总是", value: 3 }
+          { title: "A.从不", value: 0 },
+          { title: "B.偶尔", value: 1 },
+          { title: "C.经常", value: 2 },
+          { title: "D.总是", value: 3 }
         ]
       }
     };
@@ -117,6 +117,7 @@ export default {
 
     submit() {
       this.subDialogVisible = false;
+      location.reload()
     }
     // resetForm() {
     //   console.log(this.$refs.resetFields());
